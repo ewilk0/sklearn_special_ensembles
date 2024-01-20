@@ -32,7 +32,7 @@ from sklearn_special_ensembles.models.FeatureSubsetEnsemble import FeatureSubset
 train_df, test_df = generate_dummy_dataframe(num_categorical_predictors=2, categories_by_column=[[1, 2, 3, 4], [5, 6]])
 
 base_model = LGBMRegressor(verbose=-1)
-feature_ensemble = FeatureSubsetEnsemble(estimators=[base_model for _ in range(n_splits)])
+feature_ensemble = FeatureSubsetEnsemble(estimators=[base_model for _ in range(2)])
 
 feature_ensemble.fit(
     train_df.drop(columns=["target"]),
