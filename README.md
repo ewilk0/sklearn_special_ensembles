@@ -55,7 +55,7 @@ train_df, test_df = generate_dummy_dataframe(num_categorical_predictors=1, categ
 
 base_model = LGBMRegressor(verbose=-1)
 n_splits = 4
-foldable_ensemble = FoldableEnsemble(estimators=[copy.deepcopy(base_model) for _ in range(n_splits)])
+foldable_ensemble = FoldableEnsemble(estimators=[base_model for _ in range(n_splits)])
 
 foldable_ensemble.fit(train_df.drop(columns=["target"]), train_df["target"])
 preds = foldable_ensemble.predict(test_df.drop(columns=["target"]))
