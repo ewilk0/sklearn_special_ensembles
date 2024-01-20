@@ -15,7 +15,7 @@ class FeatureSubsetEnsemble():
     """
 
 
-    def __init__(self, base_estimator, verbose: int = -1):
+    def __init__(self, estimators, verbose: int = -1):
         """
         Initializes the class.
 
@@ -24,7 +24,7 @@ class FeatureSubsetEnsemble():
         :param verbose: -1 to suppress logs. Any other value to allow them.
         """
 
-        self.base_estimator = copy.deepcopy(base_estimator)
+        self.estimators = [copy.deepcopy(estimator) for estimator in estimators]
 
         self.columns_to_estimators = {}
 
@@ -43,6 +43,16 @@ class FeatureSubsetEnsemble():
         :param train_col_groups: Iterable of the feature groups to train each model on.
         """
 
+        if len(self.estimators) < len(train_col_groups):
+            if self.verbose != -1:
+                warnings.warn("Fewer estimators than column groups. Repeating last estimator to \
+                              make up for the difference.")
+            self.estimators += [copy.deepcopy(self.estimators[-1]) 
+                                for _ in range(len(train_col_groups)-len(self.estimators))]
+        elif len(self.estimators) > len(train_col_groups):
+            raise ValueError("Number of `estimators` cannot be greater than the number of given \
+                             feature groups.")
+
         if isinstance(targets, pd.DataFrame):
             if self.verbose != -1:
                 print("[FeatureSubsetEnsemble] Converting `targets` to pandas Series")
@@ -59,10 +69,11 @@ class FeatureSubsetEnsemble():
             looper.set_description("[FeatureSubsetEnsemble] Fitting models to col groups...")
         else:
             looper = train_col_groups
-        for col_group in looper:
+        for i, col_group in enumerate(looper):
             these_inputs = inputs[list(col_group)]
-            self.base_estimator.fit(these_inputs, targets)
-            self.columns_to_estimators[tuple(col_group)] = copy.deepcopy(self.base_estimator)
+            this_estimator = self.estimators[i]
+            this_estimator.fit(these_inputs, targets)
+            self.columns_to_estimators[tuple(col_group)] = copy.deepcopy(this_estimator)
         
     
     def predict(self, 
