@@ -27,7 +27,7 @@ preds = normalized_model.predict(test_df.drop(columns=["target"]))
 `FeatureSubsetEnsemble` trains separate base learners on distinct subsets of the available features in the data. This technique adds powerful diversity to an ensemble and should be particularly helpful when working with noisy data and a large feature space.
 ```python
 from sklearn_special_ensembles.tests.generate_dummy_dataframe import generate_dummy_dataframe
-from sklearn_special_ensembles.models import FeatureSubsetEnsemble
+from sklearn_special_ensembles.models.FeatureSubsetEnsemble import FeatureSubsetEnsemble
 
 train_df, test_df = generate_dummy_dataframe(num_categorical_predictors=2, categories_by_column=[[1, 2, 3, 4], [5, 6]])
 
@@ -49,7 +49,7 @@ preds = feature_ensemble.predict(test_df.drop(columns=["target"]))
 ```python
 import copy
 from sklearn_special_ensembles.tests.generate_dummy_dataframe import generate_dummy_dataframe
-from sklearn_special_ensembles.models import FoldableEnsemble
+from sklearn_special_ensembles.models.FoldableEnsemble import FoldableEnsemble
 
 train_df, test_df = generate_dummy_dataframe(num_categorical_predictors=1, categories_by_column=[[1, 2, 3, 4]])
 
