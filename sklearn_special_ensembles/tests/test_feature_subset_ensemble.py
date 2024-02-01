@@ -18,8 +18,7 @@ train_df, test_df = generate_dummy_dataframe(
 
 # create the model
 base_model = LGBMRegressor(verbose=-1)
-estimators = [base_model for _ in range(2)]
-feature_ensemble = FeatureSubsetEnsemble(estimators=estimators, verbose=1)
+feature_ensemble = FeatureSubsetEnsemble(base_estimator=base_model, verbose=1)
 
 feature_ensemble.fit(
     train_df.drop(columns=["target"]),

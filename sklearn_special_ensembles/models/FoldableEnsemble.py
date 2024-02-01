@@ -53,7 +53,6 @@ class FoldableEnsemble():
         assert (inputs.index == targets.index).all(), "Input df and target series must have the same index"
 
         df = pd.concat([inputs, targets], axis=1)
-        df["temp_idx_counter"] = np.arange(len(df))
 
         if split_by_folds:
             num_splits = len(self.estimators)
@@ -71,8 +70,8 @@ class FoldableEnsemble():
                 looper = fold_indices
             
             for train_idx in looper:
-                these_inputs = df[df["temp_idx_counter"].isin(train_idx)].drop(columns=["temp_idx_counter", target_col])
-                these_targets = df[df["temp_idx_counter"].isin(train_idx)].drop(columns=["temp_idx_counter"])[target_col]
+                these_inputs = df.loc[train_idx, :].drop(columns=[target_col])
+                these_targets = df.loc[train_idx, target_col]
                 self.estimators[i].fit(these_inputs, these_targets)
                 i += 1
 
