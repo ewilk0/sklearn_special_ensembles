@@ -104,4 +104,4 @@ preds = foldable_ensemble.predict(test_df.drop(columns=["target"]))
 ```
 
 ## Upcoming :soon:
-Don't hesitate to reach out if you find any bugs in this package or want to contribute! In the meantime, I'll just be including more of my own ensembles as they become useful and some other Kaggler's ensembles as their details are made public.
+Don't hesitate to reach out if you find any bugs in this package or want to contribute! In the meantime, I will be working on (1) making these classes fully compatible with `sklearn` (so they can be used in, say, a `VotingRegressor`) and (2) creating a pipeline framework to promote intra-compatibility within the library. I'll also include some other ensembles as I create them or as other Kaggler's make the details of theirs publicly available.
